@@ -1,0 +1,28 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]  # Запускати при пушах у гілку main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # Дозвіл на запис
+      pages: write      # Дозвіл для GitHub Pages
+      id-token: write   # Для автентифікації
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: './'  # Шлях до файлів (змініть на 'dist/', якщо використовуєте збірку)
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2
