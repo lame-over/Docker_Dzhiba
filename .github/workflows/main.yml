@@ -2,33 +2,38 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [ "main" ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    
     permissions:
-      contents: read
+      contents: write
       pages: write
       id-token: write
     
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      # Для зібраних проєктів (React/Vue тощо):
-      # - name: Install and Build
+      
+      # Якщо ваш сайт потребує збірки (наприклад, Jekyll, Next.js тощо),
+      # додайте тут кроки для збірки
+      # - name: Build
       #   run: |
       #     npm install
       #     npm run build
-
+        
       - name: Setup Pages
-        uses: actions/configure-pages@v3
-
-      - name: Upload to Pages
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/configure-pages@v4
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'  # Для зібраних проєктів змініть на 'dist/'
-
-      - name: Deploy to Pages
-        uses: actions/deploy-pages@v2
+          # Якщо ви збирали сайт, вкажіть директорію зі зібраними файлами
+          # path: './dist'
+          # Для статичних файлів без збірки:
+          path: './'
+      
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
