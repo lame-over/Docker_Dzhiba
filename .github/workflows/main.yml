@@ -2,26 +2,33 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]  # Запускати при пушах у гілку main
+    branches: [main]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # Дозвіл на запис для деплою
-      pages: write      # Спеціальний дозвіл для GitHub Pages
-      id-token: write   # Для автоматичної автентифікації
-
+      contents: read
+      pages: write
+      id-token: write
+    
     steps:
-      - uses: actions/checkout@v4  # Отримуємо код
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Для зібраних проєктів (React/Vue тощо):
+      # - name: Install and Build
+      #   run: |
+      #     npm install
+      #     npm run build
 
       - name: Setup Pages
-        uses: actions/configure-pages@v3  # Налаштовуємо GitHub Pages
+        uses: actions/configure-pages@v3
 
-      - name: Upload artifact
+      - name: Upload to Pages
         uses: actions/upload-pages-artifact@v2
         with:
-          path: './'  # Шлях до статичних файлів (можна вказати підпапку, напр. 'dist/')
+          path: '.'  # Для зібраних проєктів змініть на 'dist/'
 
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v2  # Основна дія для деплою
+      - name: Deploy to Pages
+        uses: actions/deploy-pages@v2
